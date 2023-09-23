@@ -6,15 +6,17 @@ This is a fun project that I also made since I hash files a lot and prefer to do
 
 # How to build?
 
-To build do:
+To build and install to:
 
 ```
-cargo build --release
+cargo install --path . --profile release
 ```
+NOTE: Do the command above inside the project directory.
+
 Then for run do:
 
 ```
-./target/release/hasher
+hasher
 ```
 
 Or if you want everything in one command:
