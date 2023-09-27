@@ -42,7 +42,11 @@ fn main() {
             println!("Done...");
 
             // Open or create the "hashes.txt" file and append the hash information
-            let mut f = File::create("hashes.txt").expect("Opening hashes file.");
+            let mut f = std::fs::OpenOptions::new()
+            .append(true)
+            .create(true)
+            .open("hashes.txt")
+            .expect("Opening hashes file.");
             writeln!(&mut f, "Filename: {} | Hash: {}", filepath, hex_hash)
                 .expect("Writing to the hashes file");
         }
