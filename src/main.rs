@@ -23,7 +23,6 @@ fn main() {
             break;
         }
         hasher.update(&buffer[..counter]);
-        break;
     }
 
     let hash = hasher.finalize();
