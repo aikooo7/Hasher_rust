@@ -4,10 +4,11 @@ use std::{
     io::{BufReader, Write},
 };
 
+use anyhow::{Context, Result};
 use hex::encode;
 use sha2::{Digest, Sha512};
 
-fn main() {
+fn main() -> Result<()> {
     // Initialize variables
     let mut input: String;
     let mut hasher = Sha512::new();
@@ -15,14 +16,15 @@ fn main() {
 
     // Get the file path from user input
     let filepath = user_input("What file do you want to hash? ");
-    let filename = File::open(&filepath).expect("Unable to open file.");
+    let filename =
+        File::open(&filepath).with_context(|| format!("Could not open file {}", filepath))?;
     let mut reader = BufReader::new(filename);
 
     // Read and hash the file in chunks
     loop {
         let counter = reader
             .read(&mut buffer)
-            .expect("Unable to read specific file part.");
+            .with_context(|| format!("Cannot read file to hash: {}", filepath))?;
         if counter == 0 {
             break;
         }
@@ -61,10 +63,17 @@ fn main() {
         "yes" => {
             // Clear the terminal and call the main function again for another run
             print!("\x1B[2J\x1B[1;1H");
-            main();
+            let _ = main();
+            Ok(())
         }
-        "no" => println!("See you next time..."),
-        _ => println!("Input needs to be either yes or no."),
+        "no" => {
+            println!("See you next time...");
+            Ok(())
+        }
+        _ => {
+            println!("Input needs to be either yes or no.");
+            Ok(())
+        }
     }
 }
 
