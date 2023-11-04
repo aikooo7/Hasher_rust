@@ -8,6 +8,7 @@ use anyhow::{Context, Result};
 use hex::encode;
 use sha2::{Digest, Sha512};
 
+#[allow(clippy::main_recursion)]
 fn main() -> Result<()> {
     let mut input: String;
     let mut hasher = Sha512::new();
